@@ -1,0 +1,181 @@
+/* client/src/index.scss - UPDATED MODERN REAL ESTATE THEME */
+
+/* MODERN REAL ESTATE THEME VARIABLES (V5: Vibrant & Professional) */
+:root {
+  /* BASE COLORS */
+  --color-background: #FFFFFF;           
+  --color-secondary-background: #F7F9FA; 
+  --color-primary-dark: #1F2833;         
+  --color-light-gray: #F0F0F0;           
+
+  /* ACCENTS */
+  --color-accent: #007A65;
+  --color-accent-hover: #005F52;
+  --color-secondary-accent: #FF8C42;
+  --color-secondary-accent-hover: #E07A37;
+  --color-tertiary-accent: #FF5A5F;
+  --color-quaternary-accent: #00CFFF;
+
+  /* GRADIENTS */
+  --gradient-accent: linear-gradient(135deg, #007A65, #00CFFF);
+  --gradient-secondary: linear-gradient(135deg, #FF8C42, #FF5A5F);
+
+  /* TEXT & NEUTRAL */
+  --color-text: #333333;
+  --color-text-light: #AAAAAA;
+  --color-border: #E0E0E0;
+
+  /* SHADOWS & DEPTH */
+  --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-elegant: 0 6px 18px rgba(0, 0, 0, 0.12);
+  --border-radius: 10px;                
+}
+
+/* ================== BASE RESET ================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+}
+
+body {
+  color: var(--color-text);
+  background-color: var(--color-background);
+  line-height: 1.6;
+  background: var(--color-background);
+}
+
+/* ================== BUTTONS ================== */
+button {
+  padding: 12px 20px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--border-radius);
+  transition: background 0.3s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  background-color: var(--color-text-light);
+  color: white;
+
+  &:hover {
+    background-color: var(--color-text);
+    box-shadow: var(--shadow-subtle);
+    transform: translateY(-2px);
+  }
+}
+
+/* Primary Button Class (gradient accent) */
+.primary-btn {
+  background: var(--gradient-accent);
+  color: white;
+  &:hover {
+    background: var(--gradient-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 122, 101, 0.25);
+  }
+}
+
+/* Secondary Button Class (contrast) */
+.secondary-btn {
+  background: var(--gradient-secondary);
+  color: white;
+  &:hover {
+    background: linear-gradient(135deg, #E07A37, #FF5A5F);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(255, 140, 66, 0.25);
+  }
+}
+
+/* ================== LAYOUT / PANELS / CARDS ================== */
+.card, .panel, section, .info-box {
+  background-color: var(--color-secondary-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-subtle);
+  padding: 20px;
+  transition: box-shadow 0.2s ease, transform 0.15s ease, background 0.25s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-elegant);
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #F7F9FA, #E0F7F3);
+  }
+}
+
+/* ================== TEXT & HEADINGS ================== */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-primary-dark);
+}
+
+h1 span, h2 span {
+  color: var(--color-secondary-accent); /* Highlight parts of headings */
+}
+
+p, span, li {
+  color: var(--color-text);
+}
+
+/* ================== LINKS ================== */
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.25s ease;
+
+  &:hover {
+    color: var(--color-accent-hover);
+  }
+}
+
+/* ================== FORMS ================== */
+input, select, textarea {
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 12px 15px;
+  font-size: 1rem;
+  color: var(--color-text);
+  background-color: var(--color-secondary-background);
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+
+  &:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(0, 122, 101, 0.15);
+    background: #ffffff;
+  }
+
+  &::placeholder {
+    color: var(--color-text-light);
+  }
+}
+
+/* ================== CARDS / IMAGES ================== */
+.card img, .panel img {
+  border-radius: var(--border-radius);
+  object-fit: cover;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.04);
+    box-shadow: var(--shadow-elegant);
+  }
+}
+
+/* ================== SCROLLBAR (subtle modern gradient) ================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-secondary-background);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gradient-accent);
+  border-radius: 8px;
+}
+
+/* ================== GLOBAL AVATAR FIX ================== */
+.textContainer img {
+  opacity: 0.05;
+  max-width: 15%;
+  z-index: 0;
+}

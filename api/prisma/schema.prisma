@@ -1,0 +1,149 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  price      Int
+  images     String[]
+  address    String
+  city       String
+  bedroom    Int
+  bathroom   Int
+  latitude   String
+  longitude  String
+  type       Type
+  property   Property
+  createdAt  DateTime    @default(now())
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String      @db.ObjectId
+  postDetail PostDetail?
+  savedPosts SavedPost[]
+}
+
+enum Type {
+  buy
+  rent
+}
+
+enum Property {
+  apartment
+  house
+  condo
+  land
+}
+
+model PostDetail {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  desc       String
+  utilities  String?
+  pet        String?
+  income     String?
+  size       Int?
+  school     Int?
+  bus        Int?
+  restaurant Int?
+  post       Post    @relation(fields: [postId], references: [id])
+  postId     String  @unique @db.ObjectId
+}
+
+model SavedPost {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+  userId    String   @db.ObjectId // <--- CORRECTED
+  postId    String   @db.ObjectId // <--- CORRECTED
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+}
+
+model User {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  email        String        @unique
+  username     String        @unique
+  password     String
+  avatar       String?
+  createdAt    DateTime      @default(now())
+  posts        Post[]
+  savedPosts   SavedPost[]
+  chats        Chat[]        @relation(fields: [chatIDs], references: [id])
+  chatIDs      String[]      @db.ObjectId
+  documents    Document[]
+  chatSessions ChatSession[]
+  messages     Message[]
+}
+
+model Chat {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  users       User[]    @relation(fields: [userIDs], references: [id])
+  userIDs     String[]  @db.ObjectId
+  createdAt   DateTime  @default(now())
+  seenBy      String[]  @db.ObjectId
+  messages    Message[]
+  lastMessage String?
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id]) // ✅ Added relation
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+}
+
+model Document {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  filename     String
+  originalName String
+  fileHash     String
+  content      String
+  embeddings   Float[]
+  userId       String        @db.ObjectId
+  user         User          @relation(fields: [userId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  chatSessions ChatSession[]
+
+  @@unique([userId, fileHash])
+}
+
+model ChatSession {
+  id         String        @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  userId     String        @db.ObjectId
+  user       User          @relation(fields: [userId], references: [id])
+  documentId String?       @db.ObjectId
+  document   Document?     @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  messages   ChatMessage[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model ChatMessage {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  role      MessageRole
+  sessionId String      @db.ObjectId
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+}
+
+enum MessageRole {
+  user
+  assistant
+}
